@@ -54,6 +54,12 @@ import module_HardCoreKernel
 reload(module_HardCoreKernel)
 from module_HardCoreKernel import *
 
+import module_I
+reload(module_I)
+from module_I              import *
+
+
+
 """
 import module_Integrators
 reload(module_Integrators)

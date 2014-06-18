@@ -34,7 +34,7 @@ def function_epsilon_k(list_k):
 
 	abs_fk = N.sqrt(N.real(fk)**2+N.imag(fk)**2)
 
-	eps    = N.abs(tight_binding_gamma1)*abs_fk
+	eps    = complex(1.,0.)*N.abs(tight_binding_gamma1)*abs_fk
 
 	return eps
 
@@ -63,19 +63,5 @@ def function_fermi_occupation(eps_k,mu,beta):
 	f_occ[I_big]  = 0.
 	f_occ[I_rest] = 1./(1.+N.exp(z[I_rest]))
 
-	return f_occ
+	return complex(1.,0.)*f_occ
 
-def function_fermi_occupation_derivative(eps_k,mu,beta):
-
-	z   = beta*(eps_k- mu)
-
-	zmin =-28. # Exp[zmin] ~ 10^{-12}
-	zmax = 28. # Exp[zmax] ~ 10^12
-
-	I_big   = z >= zmax
-	I_rest  = (z < zmax)*(z > zmin)
-
-	d_f_occ_de         = N.zeros_like(z)
-	d_f_occ_de[I_rest] = -beta*N.exp(z[I_rest])/(1.+N.exp(z[I_rest]))**2
-
-	return d_f_occ_de

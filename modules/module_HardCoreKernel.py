@@ -27,7 +27,7 @@ def get_gamma1(list_epsilon):
 
 	The returned value is in eV x a0^2
 	"""
-        gamma1 = gamma1_constant*list_epsilon/D_cutoff
+        gamma1 = complex(1.,0.)*gamma1_constant*list_epsilon/D_cutoff
 
         return gamma1
 
@@ -38,7 +38,7 @@ def get_gamma2(list_epsilon):
 	The returned value is in eV x a0^2
 	"""
 
-        gamma2 = gamma1_constant*gamma2_constant*N.ones_like(list_epsilon)
+        gamma2 = complex(1.,0.)*gamma1_constant*gamma2_constant*N.ones_like(list_epsilon)
 
         return gamma2
 
