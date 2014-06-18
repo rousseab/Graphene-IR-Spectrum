@@ -126,16 +126,18 @@ class IGridFunction:
 			list_Fk.append(function_fermi_occupation(epsilon_k,self.mu,self.beta))
 			list_Fkq.append(function_fermi_occupation(epsilon_kq,self.mu,self.beta))
 
-		for i, get_gamma in zip([0,1], [get_gamma1, get_gamma2]):
 
-			for n1, e1, f1 in zip([0,1],list_epsilon_k, list_Fk):
-				g1 = get_gamma(e1)
+		for n1, e1, f1 in zip([0,1],list_epsilon_k, list_Fk):
 
-				for n3, e3, f3 in zip([0,1],list_epsilon_kq, list_Fkq):
-					g3 = get_gamma(e3)
-					den13 = self.cutoff_denominator(e1-e3)
+			for n3, e3, f3 in zip([0,1],list_epsilon_kq, list_Fkq):
+				den13 = self.cutoff_denominator(e1-e3)
 
-					for n2, e2, f2 in zip([0,1],list_epsilon_k, list_Fk):
+				for n2, e2, f2 in zip([0,1],list_epsilon_k, list_Fk):
+
+					for i, get_gamma in zip([0,1], [get_gamma1, get_gamma2]):
+
+						g1 = get_gamma(e1)
+						g3 = get_gamma(e3)
 
 						key   = (i, n1,n2,n3)
                                                 index = self.index_dictionary[key]

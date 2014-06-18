@@ -8,13 +8,12 @@
 #================================================================================
 
 from module_Constants import *
-
+import sys
 
 # utility function
 def get_index(i,j):
 	I = j*(j+1)/2+i
 	return I
-
 
 class Wedge:
 	"""
@@ -59,7 +58,12 @@ class TesselationGrid:
 	def __init__(self,nx_gridsize):
 
 		self.get_symmetries()
-		irreducible_wedge = self.generate_irreducible_Wedge(nx_gridsize)
+
+                delta = 0.001
+		fy = (N.sqrt(3.)/3.-delta)*twopia # make the size just a tiny bit smaller, to avoid edge of 1BZ
+		fx = fy/N.sqrt(3.)
+
+		self.irreducible_wedge = self.generate_irreducible_Wedge(nx_gridsize,fx,fy)
 		self.generate_list_wedges()
 
 	def generate_list_wedges(self):
@@ -73,8 +77,6 @@ class TesselationGrid:
 				list_k.append(N.dot(R,k))
 			list_k = N.array(list_k)
 
-
-
                         # Make sure the Jacobian is always positive!
                         triangles_indices = deepcopy(self.irreducible_wedge.triangles_indices)
                         if N.linalg.det(R) < 0.:
@@ -87,14 +89,10 @@ class TesselationGrid:
 
 
 
-	def generate_irreducible_Wedge(self,nx_gridsize):
+	def generate_irreducible_Wedge(self,nx_gridsize,fx,fy):
 		"""
 		Generate the points inside a regular square
 		"""
-
-                delta = 0.001
-		fy = (N.sqrt(3.)/3.-delta)*twopia # make the size just a tiny bit smaller, to avoid edge of 1BZ
-		fx = fy/N.sqrt(3.)
 
 		integers = N.arange(nx_gridsize+1)
 
@@ -108,33 +106,10 @@ class TesselationGrid:
 		# create point array
 		for j in integers:
         		for i in integers[:j+1]:
-				k = get_index(i,j)
-	
 				ki.append(i)
 				kj.append(j)
 
 		list_k = N.array([N.array(ki)*fx/nx_gridsize, N.array(kj)*fy/nx_gridsize]).transpose()
-
-                """
-                tol = 1e-10
-                list_norm_k = N.sqrt(N.sum(list_k**2,axis=1))
-                I           = N.argwhere(N.abs(list_norm_k - norm_K_point) < tol)
-
-                if len(I) != 0: 
-                        iK = I[0]
-                        I = N.argsort(N.abs(list_norm_k - norm_K_point))
-
-                        # Move the K point just a little bit off the actual K point
-
-                        K0    = list_k[iK]
-                        k_nn1 = list_k[I[1]]
-                        k_nn2 = list_k[I[2]]
-
-                        K_avg    = k_nn1 + 0.999*(K0-k_nn1)
-
-                        list_k[iK] = K_avg
-                """
-
 
 		# create connections
 		for i in integers[:-1]:
@@ -161,9 +136,9 @@ class TesselationGrid:
 
 
 		triangles_indices = N.array(triangles_indices )
-		self.irreducible_wedge = Wedge(list_k=list_k,triangles_indices=triangles_indices)
+		irreducible_wedge = Wedge(list_k=list_k,triangles_indices=triangles_indices)
 
-		return 
+		return irreducible_wedge 
 
 
 	def get_symmetries(self):
@@ -206,4 +181,143 @@ class TesselationGrid:
 
 		self.list_D6 = N.array([ E, C6_1, C6_2, C3_1, C3_2, C2, C2p_1, C2p_2, C2p_3, C2pp_1, C2pp_2, C2pp_3])
 
+
+
+class TesselationDoubleGrid(TesselationGrid):
+	"""
+	This class generates and stores a k-grid which is consistent
+	with the hexagonal symmetry of graphene.
+
+	A fine grid around Gamma and K, and a coarse grid in the rest of the 
+	zone are generated.
+	"""
+
+	def __init__(self,nx_gridsize_coarse, nx_gridsize_fine, n_blocks_coarse_to_fine, include_Gamma):
+
+
+		# Test various parameters to make sure they are sound
+
+		if nx_gridsize_fine%nx_gridsize_coarse != 0:
+			print 'ERROR! The fine and coarse grids must be compatible! make sure nx_gridsize_fine = (integer) x nx_gridsize_coarse'
+			sys.exit()				
+
+		if n_blocks_coarse_to_fine < 1 or n_blocks_coarse_to_fine > nx_gridsize_coarse:
+			print 'ERROR! Pick a reasonable amount of blocks for the fine grid!'
+			sys.exit()				
+
+		self.fraction = (1.*n_blocks_coarse_to_fine)/(1.*nx_gridsize_coarse)
+
+		self.get_symmetries()
+
+                delta = 0.0001
+		self.fy = (N.sqrt(3.)/3.-delta)*twopia # make the size just a tiny bit smaller, to avoid edge of 1BZ
+		self.fx = self.fy/N.sqrt(3.)
+
+		self.include_Gamma = include_Gamma
+
+		self.nx_gridsize_coarse = nx_gridsize_coarse  
+		self.nx_gridsize_fine   = self.fraction*nx_gridsize_fine
+
+		self.irreducible_wedge = self.generate_irreducible_Wedge_double_grid()
+
+
+		self.generate_list_wedges()
+
+
+	def generate_irreducible_Wedge_double_grid(self):
+
+
+		# First, generate a dense grid in the bottom corner of the wedge
+		small_fx = self.fraction*self.fx
+		small_fy = self.fraction*self.fy
+
+		dummy_wedge = self.generate_irreducible_Wedge(self.nx_gridsize_fine,small_fx,small_fy)
+
+		list_k_1 = dummy_wedge.list_k
+		triangles_indices_1 = dummy_wedge.triangles_indices
+
+		# Translate the small triangle to the top right corner
+		dx = (1.-self.fraction)*self.fx
+		dy = (1.-self.fraction)*self.fy
+
+		translation = N.array([dx,dy])
+
+		list_k_2 = list_k_1+ translation 
+		triangles_indices_2 = deepcopy(triangles_indices_1)
+
+
+		if self.include_Gamma: 
+			# Create the list of k points for the fine sub-grid
+			list_k_fine = N.concatenate([list_k_1,list_k_2])
+			triangles_indices_fine = N.concatenate([triangles_indices_1, triangles_indices_2+len(list_k_1)])
+		else:
+			list_k_fine = list_k_2
+			triangles_indices_fine = triangles_indices_2
+
+
+		# Create the coarse grid
+		dummy_wedge = self.generate_irreducible_Wedge(self.nx_gridsize_coarse,self.fx,self.fy)
+		list_k_3 = dummy_wedge.list_k
+		triangles_indices_3 = dummy_wedge.triangles_indices
+
+
+		# move the triangles around
+		dic_indices_coarse = {}
+		list_k_coarse = []
+
+		ic = -1
+
+		dx1 = self.fraction*self.fx
+		dy1 = self.fraction*self.fy
+
+		dx2 = (1.-self.fraction)*self.fx
+		dy2 = (1.-self.fraction)*self.fy
+
+		tol = 1e-8
+
+		for i, k in enumerate(list_k_3):
+
+
+			if self.include_Gamma: 
+				for1 = k[0] < dx1-tol and k[1] < dy1-tol
+				for2 = k[0] > dx2+tol and k[1] > dy2+tol
+				forbidden = for1 or for2
+			else: 
+				forbidden = k[0] > dx2+tol and k[1] > dy2+tol
+
+			#for1 = k[0] < dx1 and k[1] < dy1
+			#for2 = k[0] > dx2 and k[1] > dy2
+
+
+			if not forbidden:
+				list_k_coarse.append(k)
+				ic += 1
+				dic_indices_coarse[i] = ic
+			
+		list_k_coarse = N.array(list_k_coarse )
+
+		triangles_indices_coarse = []
+
+		for i1,i2,i3 in triangles_indices_3: 
+
+			if dic_indices_coarse.has_key(i1) and dic_indices_coarse.has_key(i2) and dic_indices_coarse.has_key(i3):
+
+				ic1 = dic_indices_coarse[i1]
+				ic2 = dic_indices_coarse[i2]
+				ic3 = dic_indices_coarse[i3]
+
+				t = N.array([ic1,ic2,ic3])
+
+				triangles_indices_coarse.append(t)
+
+		triangles_indices_coarse = N.array(triangles_indices_coarse )
+
+		list_k = N.concatenate([list_k_fine,list_k_coarse])
+
+		triangles_indices = N.concatenate([triangles_indices_fine, triangles_indices_coarse+len(list_k_fine)]).astype(N.int)
+
+
+		irreducible_wedge = Wedge(list_k,triangles_indices)
+
+		return irreducible_wedge 
 

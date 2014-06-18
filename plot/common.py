@@ -58,24 +58,22 @@ import module_I
 reload(module_I)
 from module_I              import *
 
+import module_Tests
+reload(module_Tests)
+from module_Tests          import *
 
 
-"""
 import module_Integrators
 reload(module_Integrators)
 from module_Integrators    import *
 
 
-
-import module_ForceConstants_Mohr
-reload(module_ForceConstants_Mohr)
-from module_ForceConstants_Mohr  import *
-
-
+import module_Compute_Loop_Function
+reload(module_Compute_Loop_Function)
+from module_Compute_Loop_Function import *
 
 
 import module_NETCDF
 reload(module_NETCDF)
 from module_NETCDF         import *
 
-"""

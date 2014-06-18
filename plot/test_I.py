@@ -25,7 +25,7 @@ list_hw  = N.arange(0.,300.,1.)/1000. # in eV
 
 T = 300. # K
 
-beta = 1./kB*T
+beta = 1./(kB*T)
 mu   = -0.400 # eV
 
 
@@ -34,7 +34,6 @@ nmax = 6
 grid = TesselationGrid(nmax)
 
 for i,wedge in enumerate(grid.list_wedges):
-
        	
 	I_plus  = IGridFunction( q_vector,list_hw, delta_width, mu, beta, wedge)
 	I_minus = IGridFunction(-q_vector,list_hw, delta_width, mu, beta, wedge)

@@ -27,7 +27,6 @@ Ha_to_eV       = 27.211396132  # conversion between Hartree and eV
 eV_to_cm1      = 8065.73
 kB             = 8.6173324e-5  # Boltzmann constant, in eV / K
 
-
 #----------------------------------------
 # parameters specific to graphene
 #----------------------------------------
@@ -73,7 +72,6 @@ hvF = N.sqrt(3.)/2.*acell*N.abs(tight_binding_gamma1)  # hbar times Fermi veloci
 proton_mass   = 1.67262178e-27 # kg
 electron_mass = 9.10938291e-31 # kg
 carbon_mass   = 12.0107*proton_mass
-
 
 impurity_density = 0.023 # percentage of sites with defects, N_imp / N_carbon, 2.3%
 

@@ -32,7 +32,7 @@ warnings.filterwarnings("ignore")
 nq_max = 32
 nk_max = 64
 mu     = -0.400
-Gamma  = 0.050
+amma  = 0.050
 #filename = './HCF_nq_max=%i_nk_max=%i_mu=%i_meV_Gamma=%i_meV.nc'%(nq_max,nk_max,1000*mu,1000*Gamma)
 
 filename = './HCF_nq_max=%i_nk_max=%i_mu=%i_meV_Gamma=%i_meV.nc'%(nq_max,nk_max,1000*mu,1000*Gamma)

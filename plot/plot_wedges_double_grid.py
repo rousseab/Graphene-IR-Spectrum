@@ -18,9 +18,11 @@ import matplotlib.cm as cm
 mpl.rcParams['font.size'] = 20.
 legendfonts = FontProperties(size=16)
 
-nmax = 4
-grid = TesselationGrid(nmax)
-
+nmax_coarse = 4
+nmax_fine   = 8
+n_blocks_coarse_to_fine = 1
+include_Gamma = True
+grid = TesselationDoubleGrid(nmax_coarse, nmax_fine, n_blocks_coarse_to_fine,include_Gamma )
 
 fig = plt.figure(figsize=(10,10))
 
@@ -34,8 +36,8 @@ for i,wedge in enumerate(grid.list_wedges):
 
 	ones = N.ones(len(wedge.list_k))
 	list_Fk = ones[:,N.newaxis]
-
 	Integral += AreaIntegrator(wedge,list_Fk)[0]
+
 
 	x = wedge.list_k[:,0]/twopia
 	y = wedge.list_k[:,1]/twopia
@@ -44,10 +46,13 @@ for i,wedge in enumerate(grid.list_wedges):
         
 
 	ax.triplot(x,y,triangles=t)
+	#ax.tripcolor(x,y,triangles=t,facecolors=fc)
 
 
 FBZ_area = (2.*N.pi)**2/Area
-error = FBZ_area - Integral
+error = N.abs(FBZ_area - Integral)
+
+print 'Integration error : %12.8e'%error
 
 for line in ax.xaxis.get_ticklines()+ax.yaxis.get_ticklines():
 	line.set_markeredgewidth(3)
