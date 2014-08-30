@@ -25,17 +25,17 @@ T = 300. # K
 beta = 1./(kB*T)
 mu   = -0.400 # eV
 
-delta_width = 0.250 # eV
+delta_width = 0.050 # eV
 
 
 #nmax = 12
 #grid = TesselationGrid(nmax)
 
-nmax_coarse = 24
-nmax_fine   = 120
-n_blocks_coarse_to_fine = 5
+nmax_coarse = 8
+nmax_fine   = 32
+n_blocks_coarse_to_fine = 3
 
-include_Gamma = False
+include_Gamma =True
 grid = TesselationDoubleGrid(nmax_coarse, nmax_fine, n_blocks_coarse_to_fine,include_Gamma )
 
 

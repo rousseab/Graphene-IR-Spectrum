@@ -18,9 +18,9 @@ import matplotlib.cm as cm
 mpl.rcParams['font.size'] = 20.
 legendfonts = FontProperties(size=16)
 
-nmax_coarse = 4
-nmax_fine   = 8
-n_blocks_coarse_to_fine = 1
+nmax_coarse = 8
+nmax_fine   = 32
+n_blocks_coarse_to_fine = 3
 include_Gamma = True
 grid = TesselationDoubleGrid(nmax_coarse, nmax_fine, n_blocks_coarse_to_fine,include_Gamma )
 
