@@ -19,10 +19,10 @@ def getDubayForceConstants():
 	hostname = socket.gethostname()
 
 	if hostname == 'ferron.pmc.umontreal.ca':
-	        datafile = open('/Users/Shared/Bruno/work/projects/Graphene_Fano/python_work/HardCoreKernelFano/modules/force_constants.txt')
+		datafile = open('/Users/Shared/Bruno/work/projects/Graphene_Fano/python_work/HardCoreKernelFano/modules/force_constants.txt')
 
 	else:
-	        datafile = open('/Users/Bruno/work/Projects/fano_project/HardCoreKernelFano_2.0/modules/force_constants.txt')
+		datafile = open('/Users/Bruno/work/Projects/fano_project/HardCoreKernelFano_2.0/modules/force_constants.txt')
 
 
 
@@ -40,7 +40,6 @@ def getDubayForceConstants():
 			dat = []
 			for el in strip_line[1:]:
 				dat.append(-float(el)*bohr_in_angst**2)
-		
 			Matrix_cartesian = N.array([[dat[0],dat[2],   0.],
 					            [dat[1],dat[3],   0.],
 					            [    0.,    0.,dat[8]]])
@@ -180,7 +179,7 @@ def build_force_constants_Dubay():
 	nmax = 26
 	list_p_wedge = create_neigbhors_in_wedge(list_C)[1:nmax]
 	list_labels  = ['  1','  2','  3','  4','  5',' 5p','  6' ,'  7','  8','  9','10p',' 10',' 11',
-                	' 12',' 13',' 14','15p',' 15',' 16','17p',' 17',' 18',' 19','20p',' 20']
+			' 12',' 13',' 14','15p',' 15',' 16','17p',' 17',' 18',' 19','20p',' 20']
 
 
 	list_D3 = get_D3()
