@@ -27,10 +27,10 @@ class dF_GridFunction:
 
 	def __init__(self,q_vector, mu, beta, wedge):
 
-                self.q_vector    = q_vector
+		self.q_vector    = q_vector
 
-                self.mu  = mu
-                self.beta= beta
+		self.mu  = mu
+		self.beta= beta
 
 		self.build_dF(wedge)
 
@@ -40,13 +40,13 @@ class dF_GridFunction:
 		Compute 1/x, with a gaussian cutoff as we approach x=0. 
 		"""
 
-        	tol = 1e-3
+		tol = 1e-3
 
-        	z   = list_energy/tol
+		z   = list_energy/tol
 
-        	den = N.imag(SS.wofz(z))/tol*N.sqrt(N.pi)
+		den = N.imag(SS.wofz(z))/tol*N.sqrt(N.pi)
 
-        	return den
+		return den
 
 
 	def build_dF(self,wedge):
@@ -55,21 +55,21 @@ class dF_GridFunction:
 		is computed here
 		"""
 
-                list_k    = wedge.list_k
-                list_kq   = list_k + self.q_vector
+		list_k    = wedge.list_k
+		list_kq   = list_k + self.q_vector
 
-                fk        = function_fk(list_k)
-	        eps_k     = function_epsilon_k(list_k)
+		fk        = function_fk(list_k)
+		eps_k     = function_epsilon_k(list_k)
 
 		Fk = function_fermi_occupation(-eps_k,self.mu,self.beta)
 
-                fkq       = function_fk(list_kq)
-	        eps_kq    = function_epsilon_k(list_kq)
+		fkq       = function_fk(list_kq)
+		eps_kq    = function_epsilon_k(list_kq)
 
 		Fkq = function_fermi_occupation(-eps_kq,self.mu,self.beta)
 
 		den = self.cutoff_denominator(-eps_kq+eps_k)
 
-                self.df   = -(Fkq-Fk)*den
+		self.df   = -(Fkq-Fk)*den
 
 		return 
