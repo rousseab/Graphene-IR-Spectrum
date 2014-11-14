@@ -54,8 +54,9 @@ class Compute_Loop_Function:
         # Hq will be in fundamental units of [charge] x [velocity], e hbar / m a_0
 
         # first index   : alpha = x, y
-        # second index  : elph coupling parameters u, v
-        self.Hq = complex(0.,0.)*N.zeros([2, 2, self.nhw])
+        # second index  : i, separating the two kernels gamma_1 and gamma_2
+        # third  index  : elph coupling parameters u, v
+        self.Hq = complex(0.,0.)*N.zeros([2, 2, 2, self.nhw])
         return
 
 
@@ -92,8 +93,8 @@ class Compute_Loop_Function:
                                 MI_u = MatrixElements_u[:,N.newaxis]*IElements 
                                 MI_v = MatrixElements_v[:,N.newaxis]*IElements 
 
-                                self.Hq[i_alpha,0,:] += self.normalization*AreaIntegrator(wedge,MI_u)
-                                self.Hq[i_alpha,1,:] += self.normalization*AreaIntegrator(wedge,MI_v)
+                                self.Hq[i_alpha,i,0,:] += self.normalization*AreaIntegrator(wedge,MI_u)
+                                self.Hq[i_alpha,i,1,:] += self.normalization*AreaIntegrator(wedge,MI_v)
 
         return
 
