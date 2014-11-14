@@ -103,23 +103,23 @@ class MGridFunction:
         zeros = complex(1.,0.)*N.zeros(self.nk)
 
         Id   = MatrixList(    ones ,   zeros,\
-                    zeros,    ones)
+                              zeros,    ones)
 
         SIG1 = MatrixList(    zeros,    ones,\
-                    ones ,   zeros)
+                              ones ,   zeros)
 
         # U matrices, no units
         Uk   = MatrixList(  Ak/N.sqrt(2.)   ,  -Ak/N.sqrt(2.), \
-                    ones/N.sqrt(2.) , ones/N.sqrt(2.) )
+                            ones/N.sqrt(2.) , ones/N.sqrt(2.) )
 
         Ukd  = MatrixList(    Ak_star/N.sqrt(2.),  ones/N.sqrt(2.),\
-                    -Ak_star/N.sqrt(2.),  ones/N.sqrt(2.))
+                             -Ak_star/N.sqrt(2.),  ones/N.sqrt(2.))
 
         Ukq  = MatrixList(  Akq/N.sqrt(2.)  ,  -Akq/N.sqrt(2.),\
-                    ones/N.sqrt(2.) , ones/N.sqrt(2.) )
+                            ones/N.sqrt(2.) , ones/N.sqrt(2.) )
 
         Ukqd = MatrixList(   Akq_star/N.sqrt(2.),  ones/N.sqrt(2.),\
-                    -Akq_star/N.sqrt(2.),  ones/N.sqrt(2.))
+                            -Akq_star/N.sqrt(2.),  ones/N.sqrt(2.))
 
         # Q matrices - without units
         Q1_mat = Ukqd*Id*Uk
@@ -138,10 +138,10 @@ class MGridFunction:
         current_prefactor = 2./3.*1j*hvF/Ha_to_eV 
 
         Hkx  = MatrixList(             zeros               ,  current_prefactor*Vkx,\
-                  -current_prefactor*N.conjugate(Vkx)  ,          zeros         ) 
+                      -current_prefactor*N.conjugate(Vkx)  ,          zeros         ) 
 
         Hky  = MatrixList(             zeros               ,  current_prefactor*Vky,\
-                  -current_prefactor*N.conjugate(Vky)  ,          zeros         ) 
+                      -current_prefactor*N.conjugate(Vky)  ,          zeros         ) 
 
         Jx_mat = Ukd*Hkx*Uk
         Jy_mat = Ukd*Hky*Uk
