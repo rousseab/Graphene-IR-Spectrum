@@ -38,15 +38,13 @@ class Wedge:
 
 			self.cross_products.append( N.linalg.norm(N.cross(k2-k1,k3-k1)) )
 
-                        J = complex(1.,0.)*N.array([ [k2[0]-k1[0],k3[0]-k1[0]] ,\
+			J = complex(1.,0.)*N.array([ [k2[0]-k1[0],k3[0]-k1[0]] ,\
                                                      [k2[1]-k1[1],k3[1]-k1[1]] ])
-		
-	
-                        self.Jacobians.append(J)
+			self.Jacobians.append(J)
 
 
-                self.cross_products = N.array(self.cross_products)
-                self.Jacobians      = N.array(self.Jacobians)
+		self.cross_products = N.array(self.cross_products)
+		self.Jacobians      = N.array(self.Jacobians)
 
 
 class TesselationGrid:
@@ -59,7 +57,7 @@ class TesselationGrid:
 
 		self.get_symmetries()
 
-                delta = 0.001
+		delta = 0.001
 		fy = (N.sqrt(3.)/3.-delta)*twopia # make the size just a tiny bit smaller, to avoid edge of 1BZ
 		fx = fy/N.sqrt(3.)
 
@@ -77,11 +75,11 @@ class TesselationGrid:
 				list_k.append(N.dot(R,k))
 			list_k = N.array(list_k)
 
-                        # Make sure the Jacobian is always positive!
-                        triangles_indices = deepcopy(self.irreducible_wedge.triangles_indices)
-                        if N.linalg.det(R) < 0.:
-                                triangles_indices[:,1] = self.irreducible_wedge.triangles_indices[:,2]
-                                triangles_indices[:,2] = self.irreducible_wedge.triangles_indices[:,1]
+			# Make sure the Jacobian is always positive!
+			triangles_indices = deepcopy(self.irreducible_wedge.triangles_indices)
+			if N.linalg.det(R) < 0.:
+				triangles_indices[:,1] = self.irreducible_wedge.triangles_indices[:,2]
+				triangles_indices[:,2] = self.irreducible_wedge.triangles_indices[:,1]
 
 			wedge = Wedge(list_k,triangles_indices)
 
@@ -105,7 +103,7 @@ class TesselationGrid:
 
 		# create point array
 		for j in integers:
-        		for i in integers[:j+1]:
+			for i in integers[:j+1]:
 				ki.append(i)
 				kj.append(j)
 
@@ -120,7 +118,7 @@ class TesselationGrid:
 			I3 = get_index(i+1,j+1)
 			triangles_indices.append([I1,I2,I3])
 
-        		for j in integers[i+1:-1]:
+			for j in integers[i+1:-1]:
 
 				I1 = get_index(i,j+1)
 				I2 = get_index(i,j)
@@ -199,17 +197,17 @@ class TesselationDoubleGrid(TesselationGrid):
 
 		if nx_gridsize_fine%nx_gridsize_coarse != 0:
 			print 'ERROR! The fine and coarse grids must be compatible! make sure nx_gridsize_fine = (integer) x nx_gridsize_coarse'
-			sys.exit()				
+			sys.exit()
 
 		if n_blocks_coarse_to_fine < 1 or n_blocks_coarse_to_fine > nx_gridsize_coarse:
 			print 'ERROR! Pick a reasonable amount of blocks for the fine grid!'
-			sys.exit()				
+			sys.exit()
 
 		self.fraction = (1.*n_blocks_coarse_to_fine)/(1.*nx_gridsize_coarse)
 
 		self.get_symmetries()
 
-                delta = 0.0001
+		delta = 0.0001
 		self.fy = (N.sqrt(3.)/3.-delta)*twopia # make the size just a tiny bit smaller, to avoid edge of 1BZ
 		self.fx = self.fy/N.sqrt(3.)
 
@@ -293,7 +291,7 @@ class TesselationDoubleGrid(TesselationGrid):
 				list_k_coarse.append(k)
 				ic += 1
 				dic_indices_coarse[i] = ic
-			
+
 		list_k_coarse = N.array(list_k_coarse )
 
 		triangles_indices_coarse = []
