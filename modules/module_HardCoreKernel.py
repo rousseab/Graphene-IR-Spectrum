@@ -1,10 +1,10 @@
 #================================================================================
 #
-#			Module HardCoreKernel
-#			=====================
+#           Module HardCoreKernel
+#           =====================
 #
-#	This module implements the simplest analytical functions which describe
-#	the hard core kernel for graphene.
+#   This module implements the simplest analytical functions which describe
+#   the hard core kernel for graphene.
 #
 #================================================================================
 from module_Constants import *
