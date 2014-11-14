@@ -19,7 +19,7 @@ import scipy.special as SS
 class IGridFunction:
 	"""
 	Class which builds and contains the I_{i,{n}}(k,k+q,w) object, which
-        is the result of summing on all the G functions in the loop function.
+	is the result of summing on all the G functions in the loop function.
 
 	All the band energies will be assumed to be in eV, and the gamma 
 	functions are in eV x a0^2. The units of I are
@@ -34,47 +34,47 @@ class IGridFunction:
 	def __init__(self,q_vector,list_hw, delta_width, mu, beta, wedge):
 
 
-                self.conversion_factor = Ha_to_eV
+		self.conversion_factor = Ha_to_eV
 
-                self.q_vector    = q_vector
-                self.delta_width = delta_width
-                self.list_hw     = list_hw
-                self.z           = list_hw+1j*delta_width
-                self.z2          = self.z**2
+		self.q_vector    = q_vector
+		self.delta_width = delta_width
+		self.list_hw     = list_hw
+		self.z           = list_hw+1j*delta_width
+		self.z2          = self.z**2
 
-                self.mu  = mu
-                self.beta= beta
+		self.mu  = mu
+		self.beta= beta
 
 
-                self.build_indices()
+		self.build_indices()
 
-                self.nk   = len(wedge.list_k)
-                self.nw   = len(self.list_hw)
-                self.dim  = len(self.index_dictionary)
+		self.nk   = len(wedge.list_k)
+		self.nw   = len(self.list_hw)
+		self.dim  = len(self.index_dictionary)
 
 		# I will be in units of [Length]^2 / [Enegy].
 		# where all terms are in fundamental units
 
-                self.I    = complex(0.,0.)*N.zeros([self.dim,self.nk,self.nw])
+		self.I    = complex(0.,0.)*N.zeros([self.dim,self.nk,self.nw])
 
-                self.epsilon_k = complex(0.,0.)*N.zeros([2,self.nk])
-                self.epsilon_kq= complex(0.,0.)*N.zeros([2,self.nk])
+		self.epsilon_k = complex(0.,0.)*N.zeros([2,self.nk])
+		self.epsilon_kq= complex(0.,0.)*N.zeros([2,self.nk])
 
-                self.build_I(wedge)
+		self.build_I(wedge)
 
 
-        def build_indices(self):
+	def build_indices(self):
 
-                self.index_dictionary = {}
+		self.index_dictionary = {}
                 
-                index = -1
+		index = -1
 		for i in [0,1]:
 			for n1 in [0,1]:
 				for n2 in [0,1]:
 					for n3 in [0,1]:
 						index += 1 
 						key = (i,n1,n2,n3)
-                                                self.index_dictionary[key] = index
+						self.index_dictionary[key] = index
 
 
 	def get_frequency_term(self, list_energy_difference):
@@ -91,13 +91,13 @@ class IGridFunction:
 		Compute 1/x, with a gaussian cutoff as we approach x=0. 
 		"""
 
-        	tol = 1e-3
+		tol = 1e-3
 
-        	z   = list_energy/tol
+		z   = list_energy/tol
 
-        	den = N.imag(SS.wofz(z))/tol*N.sqrt(N.pi)
+		den = N.imag(SS.wofz(z))/tol*N.sqrt(N.pi)
 
-        	return den
+		return den
 
 
 	def build_I(self,wedge):
@@ -106,16 +106,16 @@ class IGridFunction:
 		this code as transparent as possible, to avoid making mistakes!
 		"""
 
-                list_k    = wedge.list_k
-                list_kq   = list_k + self.q_vector
+		list_k    = wedge.list_k
+		list_kq   = list_k + self.q_vector
 
-                fk        = function_fk(list_k)
-	        eps_k     = function_epsilon_k(list_k)
+		fk        = function_fk(list_k)
+		eps_k     = function_epsilon_k(list_k)
 
 		list_epsilon_k = [-eps_k, eps_k]
 
-                fkq       = function_fk(list_kq)
-	        eps_kq    = function_epsilon_k(list_kq)
+		fkq       = function_fk(list_kq)
+		eps_kq    = function_epsilon_k(list_kq)
 
 		list_epsilon_kq = [-eps_kq, eps_kq]
 
@@ -140,7 +140,7 @@ class IGridFunction:
 						g3 = get_gamma(e3)
 
 						key   = (i, n1,n2,n3)
-                                                index = self.index_dictionary[key]
+						index = self.index_dictionary[key]
 
 						freq12 = self.get_frequency_term(e1-e2)
 
@@ -151,6 +151,6 @@ class IGridFunction:
 
 						numerator = fac12[:,N.newaxis]*freq12 -fac32[:,N.newaxis]*freq32
 
-                				self.I[index,:,:] = self.conversion_factor*den13[:,N.newaxis]*numerator 
+						self.I[index,:,:] = self.conversion_factor*den13[:,N.newaxis]*numerator 
 
 		return 
