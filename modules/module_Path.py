@@ -79,6 +79,6 @@ class Path:
 		self.list_k.append(k)
 		self.list_xticks.append(x)
 		self.list_labels.append('$\Gamma$')
-		
+
 		self.list_x = N.array(self.list_x)
 		self.list_k = N.array(self.list_k)
