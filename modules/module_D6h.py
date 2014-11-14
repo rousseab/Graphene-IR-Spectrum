@@ -18,21 +18,21 @@ def get_D6h():
 
 		C6^3            C2             rotation by pi about the z axis
 
-	   C2'_{1,2,3}         3C2'            rotation by pi about the three axes which cross the center
+		C2'_{1,2,3}         3C2'            rotation by pi about the three axes which cross the center
 					       of the hexagon and two corners.
 
-	   C2''_{1,2,3}        3C2''           rotation by pi about the three axes which cross the center
+		C2''_{1,2,3}        3C2''           rotation by pi about the three axes which cross the center
 					       of the hexagon and two faces.
 
 		I               I              the inversion
 
-	  sh*C6^2,sh*C6^{-2}   2S3             left and right rotation by 2 pi/3 about the z axis, followed by horizontal
+		sh*C6^2,sh*C6^{-2}   2S3             left and right rotation by 2 pi/3 about the z axis, followed by horizontal
 					       reflection
 
-	  sh*C6,sh*C6^{-1}     2S6             left and right rotation by  pi/3 about the z axis, followed by horizontal
+		sh*C6,sh*C6^{-1}     2S6             left and right rotation by  pi/3 about the z axis, followed by horizontal
 					       reflection
 
-	      sh               sh              reflection through horizontal plane
+		sh               sh              reflection through horizontal plane
 
 	  sd_{1,2,3}           3sd             reflection through vertical planes crossing planes of hexagon
 
@@ -46,9 +46,9 @@ def get_D6h():
 	s     = N.sin(theta)
 
 	# Identity
-	E =  N.array([[  1.,  0.,  0.],              
-		      [  0.,  1.,  0.],
-		      [  0.,  0.,  1.]])
+	E =  N.array([	[  1.,  0.,  0.],              
+			[  0.,  1.,  0.],
+			[  0.,  0.,  1.]])
 
 
 	# pi/3 rotation left
