@@ -22,23 +22,23 @@ gamma2_constant =  N.sqrt(3.)*acell*D_cutoff/(12.*hvF)
 
 
 def get_gamma1(list_epsilon):
-	"""
-	The argument should be epsilon_{nk} = xi_{nk}+mu, in eV.
+    """
+    The argument should be epsilon_{nk} = xi_{nk}+mu, in eV.
 
-	The returned value is in eV x a0^2
-	"""
-	gamma1 = complex(1.,0.)*gamma1_constant*list_epsilon/D_cutoff
+    The returned value is in eV x a0^2
+    """
+    gamma1 = complex(1.,0.)*gamma1_constant*list_epsilon/D_cutoff
 
-	return gamma1
+    return gamma1
 
 def get_gamma2(list_epsilon):
-	"""
-	The argument should be epsilon_{nk} = xi_{nk}+mu, in eV
+    """
+    The argument should be epsilon_{nk} = xi_{nk}+mu, in eV
 
-	The returned value is in eV x a0^2
-	"""
+    The returned value is in eV x a0^2
+    """
 
-	gamma2 = complex(1.,0.)*gamma1_constant*gamma2_constant*N.ones_like(list_epsilon)
+    gamma2 = complex(1.,0.)*gamma1_constant*gamma2_constant*N.ones_like(list_epsilon)
 
-	return gamma2
+    return gamma2
 

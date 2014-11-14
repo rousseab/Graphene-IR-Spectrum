@@ -1,10 +1,10 @@
 #================================================================================
 #
-#			Module Constants
-#			===========================
+#           Module Constants
+#           ===========================
 #
-#	This "module" will simply contain, once and for all, various geometric
-#	constants relating to Graphene. It also imports all the necessary
+#   This "module" will simply contain, once and for all, various geometric
+#   constants relating to Graphene. It also imports all the necessary
 #   modules.
 #================================================================================
 
